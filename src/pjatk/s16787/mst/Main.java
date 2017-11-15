@@ -4,6 +4,8 @@ public class Main
 {
 	public static void main(String args[])
 	{
+		GraphicsHandler graphicsHandler = new GraphicsHandler(800, 600);
+		
 		FileHandler fileHandler = new FileHandler();
 		
 		if(fileHandler.openFile("debug.txt"))
