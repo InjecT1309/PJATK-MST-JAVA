@@ -13,7 +13,7 @@ public class Main
 		
 		for(int i=0; i<5; i++)
 		{
-			node[i] = new Node(i, 100 + i*100, 100 + i*100);
+			node[i] = new Node(i, i*150, i*100);
 		}
 		
 		GraphicsHandler graphicsHandler = new GraphicsHandler(800, 600);
