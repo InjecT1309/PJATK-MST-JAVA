@@ -25,7 +25,6 @@ public class FileHandler
 		}
 		return true;
 	}
-	
 	public void readFile()
 	{
 		String line;
@@ -40,19 +39,6 @@ public class FileHandler
 		catch(IOException e)
 		{
 			
-		}
-	}
-	
-	public void close()
-	{
-		try
-		{
-			if(reader!=null)
-				reader.close();
-		}
-		catch(IOException e)
-		{
-			//do not take any action - file is already closed
 		}
 	}
 }
