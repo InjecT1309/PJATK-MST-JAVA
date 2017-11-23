@@ -3,23 +3,32 @@ package pjatk.s16787.mst;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
-import javax.swing.JButton;
+import java.util.Vector;
 
 public class FramePainter extends JPanel
 {
-	Node node[];
-	Connection cnct[] = new Connection[1];
-	JButton button;
+	Vector<Node> node;
+	Vector<Connection> connection;
 	NodeMover nodeMover;
 	
-	public FramePainter(Node node[], Connection connection[])
+	public FramePainter(Vector<Node> node, Vector<Connection> connection)
 	{
 		this.node = node;
-		this.cnct = connection;
+		this.connection = connection;
 		nodeMover = new NodeMover(node);
 		addMouseListener(nodeMover);
 	}
 	
+	public void addNewNodes(Vector<Node> newNodes)
+	{
+		node = newNodes;
+		nodeMover = new NodeMover(node);
+		addMouseListener(nodeMover);
+	}
+	public void addNewConnections(Vector<Connection> newConnections)
+	{
+		connection = newConnections;
+	}
 	public void paintComponent(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
@@ -31,16 +40,16 @@ public class FramePainter extends JPanel
 	}
 	private void drawNodes(Graphics2D g2d)
 	{
-		for(int i=0; i<node.length; i++)
+		for(int i=0; i<node.size(); i++)
 		{
-			node[i].draw(g2d);
+			node.elementAt(i).draw(g2d);
 		}
 	}
 	private void drawConnections(Graphics2D g2d)
 	{
-		for(int i=0; i<cnct.length; i++)
+		for(int i=0; i<connection.size(); i++)
 		{
-			cnct[i].draw(g2d);
+			connection.elementAt(i).draw(g2d);
 		}
 	}
 }

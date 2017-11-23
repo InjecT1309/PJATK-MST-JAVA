@@ -2,12 +2,13 @@ package pjatk.s16787.mst;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.util.Vector;
 
 public class NodeMover implements MouseListener
 {
-	Node[] node;
+	Vector<Node> node;
 	
-	public NodeMover(Node[] node)
+	public NodeMover(Vector<Node> node)
 	{
 		this.node = node;
 	}

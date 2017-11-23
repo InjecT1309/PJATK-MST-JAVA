@@ -8,20 +8,27 @@ import java.util.Arrays;
 
 public class FileHandler
 {
-	BufferedReader reader = null;
+	BufferedReader reader;
 	String filePath;
 	
 	public FileHandler()
 	{
 		
 	}
+	public FileHandler(String filePath)
+	{
+		this.filePath = filePath;
+	}
 	
-	public boolean openFile(String filePath)
+	public void setFilePath(String filePath)
+	{
+		this.filePath = filePath;
+	}
+	public boolean openFile()
 	{
 		try
 		{
 			reader = new BufferedReader(new FileReader(filePath));
-			this.filePath = filePath;
 		}
 		catch(IOException e)
 		{
@@ -29,7 +36,7 @@ public class FileHandler
 		}
 		return true;
 	}
-	public Node[] createNodes()
+	public Vector<Node> createNodes()
 	{
 		String line;
 		
@@ -45,31 +52,34 @@ public class FileHandler
 		
 		int howMany = Integer.parseInt(line);
 		int height = 0;
-		Node node[] = new Node[howMany];
+		Vector<Node> node = new Vector<Node>();
+		Node newNode;
+		
 		for(int i=0; i<howMany; i++)
 		{
 			if(i%9==0)
 				height+=80;
-			node[i] = new Node(i, 50+i*80, height);
+			newNode = new Node(i, 50+i*80, height);
+			node.add(newNode);
 		}
 		return node;
 	}
-	public Connection[] createConnections(Node node[])
+	public Vector<Connection> createConnections(Vector<Node> node)
 	{	
 		String line;
-		Connection connection[] = new Connection[16];
+		Vector<Connection> connection = new Vector<Connection>();
 		
 		try
 		{
 			reopenFile();
 			reader.readLine();	//reads through the line showing how many nodes there are
+			Connection newConnection;
 			
-			int i=0;
 			while((line = reader.readLine())!=null)
 			{
 				int[] info = parseConnectionInfo(line);
-				connection[i] = new Connection(node[info[0]], node[info[1]], info[2]);
-				i++;
+				newConnection = new Connection(node.elementAt(info[0]), node.elementAt(info[1]), info[2]);
+				connection.add(newConnection);
 			}
 		}
 		catch(IOException e)
@@ -80,7 +90,7 @@ public class FileHandler
 		return connection;
 	}
 	
-	private void reopenFile()
+	public void reopenFile()
 	{
 		try
 		{
@@ -90,26 +100,6 @@ public class FileHandler
 		{
 			
 		}
-	}
-	private int checkHowManyLines()
-	{
-		int output = 0;
-		
-		try
-		{	
-			reopenFile();
-			while(reader.readLine()!=null)
-			{
-				output++;
-			}
-			reader.reset();
-		}
-		catch(IOException e)
-		{
-			
-		}
-		
-		return output;
 	}
 	private int[] parseConnectionInfo(String line)
 	{

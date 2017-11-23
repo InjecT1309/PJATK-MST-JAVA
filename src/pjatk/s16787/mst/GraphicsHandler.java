@@ -1,17 +1,17 @@
 package pjatk.s16787.mst;
 
 import javax.swing.JFrame;
-
 import java.awt.BorderLayout;
 import java.lang.Runnable;
+import java.util.Vector;
 
 public class GraphicsHandler extends JFrame implements Runnable
 {
 	FileHandler fileHandler;
 	FramePainter painter;
-	MSTButtonManager buttonManager;
-	Node[] node;
-	Connection[] connection;
+	ButtonManager buttonManager;
+	Vector<Node> node;
+	Vector<Connection> connection;
 	
 	public GraphicsHandler(int width, int length)
 	{
@@ -21,14 +21,15 @@ public class GraphicsHandler extends JFrame implements Runnable
 		setVisible(true);
 		
 		fileHandler = new FileHandler();
-		if(fileHandler.openFile("example.txt"))
+		fileHandler.setFilePath("example.txt");
+		if(fileHandler.openFile())
 		{
 			node = fileHandler.createNodes();
 			connection = fileHandler.createConnections(node);
 			painter = new FramePainter(node, connection);
 		}
 		
-		buttonManager = new MSTButtonManager();
+		buttonManager = new ButtonManager(painter, fileHandler);
 	
 		add(painter);
 		add(buttonManager, BorderLayout.NORTH);
