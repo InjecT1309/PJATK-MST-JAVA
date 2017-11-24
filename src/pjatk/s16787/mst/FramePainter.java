@@ -11,12 +11,9 @@ public class FramePainter extends JPanel
 	Vector<Connection> connection;
 	NodeMover nodeMover;
 	
-	public FramePainter(Vector<Node> node, Vector<Connection> connection)
+	public FramePainter()
 	{
-		this.node = node;
-		this.connection = connection;
-		nodeMover = new NodeMover(node);
-		addMouseListener(nodeMover);
+		
 	}
 	
 	public void addNewNodes(Vector<Node> newNodes)
@@ -33,7 +30,7 @@ public class FramePainter extends JPanel
 	{
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.clearRect(0, 0, 800, 600);
+		g2d.clearRect(0, 0, getWidth(), getHeight());
 		
 		drawConnections(g2d);
 		drawNodes(g2d);

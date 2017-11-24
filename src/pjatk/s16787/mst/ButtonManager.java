@@ -10,24 +10,29 @@ import java.util.Vector;
 public class ButtonManager extends JPanel{
 	JButton load, connect, reset;
 	
-	public ButtonManager(FramePainter painter, FileHandler fileHandler)
+	public ButtonManager(FramePainter painter, FileHandler fileHandler, MSTManager algorithm)
 	{
 		load = new JButton("Load from file");
-		connect = new JButton("Connect all modules");
+		connect = new JButton("Find best connections");
 		reset = new JButton("Reset");
 		
-		load.addActionListener(new MSTActionListener(painter, fileHandler)
+		load.addActionListener(new MyActionListener(fileHandler, painter, algorithm)
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
 			  JFrame frame = new JFrame("Load file");
-			  fileHandler.setFilePath(JOptionPane.showInputDialog(frame, "Whats the file path?"));
-			  if(fileHandler.openFile())
+			  String newPath = JOptionPane.showInputDialog(frame, "Whats the file path?");
+			  if(newPath!=null&&fileHandler.tryFile(newPath))
 			  {
+				  fileHandler.setFilePath(newPath);
+				  fileHandler.openFile();
+				  
 				  Vector<Node> newNodes = fileHandler.createNodes();
 				  Vector<Connection> newConnections = fileHandler.createConnections(newNodes);
 				  painter.addNewNodes(newNodes);
 				  painter.addNewConnections(newConnections);
+				  algorithm.addNodes(newNodes);
+				  algorithm.addConnections(newConnections);
 			  }
 			  else
 			  {
@@ -35,14 +40,16 @@ public class ButtonManager extends JPanel{
 			  }
 		  }
 		});
-		connect.addActionListener(new MSTActionListener(painter, fileHandler)
+		
+		connect.addActionListener(new MyActionListener(fileHandler, painter, algorithm)
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-			  
+			  algorithm.showBestConnections();
 		  }
 		});
-		reset.addActionListener(new MSTActionListener(painter, fileHandler)
+		
+		reset.addActionListener(new MyActionListener(fileHandler, painter, algorithm)
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
@@ -50,6 +57,8 @@ public class ButtonManager extends JPanel{
 			  Vector<Connection> newConnections = fileHandler.createConnections(newNodes);
 			  painter.addNewNodes(newNodes);
 			  painter.addNewConnections(newConnections);
+			  algorithm.addNodes(newNodes);
+			  algorithm.addConnections(newConnections);
 		  }
 		});
 		

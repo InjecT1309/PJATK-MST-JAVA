@@ -36,6 +36,19 @@ public class FileHandler
 		}
 		return true;
 	}
+	public boolean tryFile(String newPath)
+	{
+		try
+		{
+			reader = new BufferedReader(new FileReader(newPath));
+			reader = new BufferedReader(new FileReader(filePath));
+		}
+		catch(IOException e)
+		{
+			return false;
+		}
+		return true;
+	}
 	public Vector<Node> createNodes()
 	{
 		String line;
@@ -51,15 +64,20 @@ public class FileHandler
 		}
 		
 		int howMany = Integer.parseInt(line);
-		int height = 0;
+		int x = 0, y = 0;
 		Vector<Node> node = new Vector<Node>();
 		Node newNode;
 		
 		for(int i=0; i<howMany; i++)
 		{
 			if(i%9==0)
-				height+=80;
-			newNode = new Node(i, 50+i*80, height);
+			{
+				y+=80;
+				x=0;
+			}
+			x+=80;
+			
+			newNode = new Node(i, x, y);
 			node.add(newNode);
 		}
 		return node;
@@ -79,6 +97,7 @@ public class FileHandler
 			{
 				int[] info = parseConnectionInfo(line);
 				newConnection = new Connection(node.elementAt(info[0]), node.elementAt(info[1]), info[2]);
+
 				connection.add(newConnection);
 			}
 		}
